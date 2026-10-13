@@ -1,25 +1,19 @@
-# Roteiro de evidências reais
+# Evidências da execução
 
-Não substitua execuções por imagens ilustrativas. Os prints da Fase 5 demonstram MongoDB,
-não os requisitos DevOps desta fase. Nesta versão nenhum deploy foi declarado como realizado.
+Capturas reais fornecidas pelo autor em 13/10/2026. Os arquivos originais foram preservados.
 
-| Código | Capturar | Critério de conferência |
+| ID | Conteúdo | Arquivo |
 |---|---|---|
-| E01 | Job Build aberto no GitHub | Commit e conclusão bem-sucedida |
-| E02 | Etapa Testes automatizados | Contagem de testes e zero falhas |
-| E03 | Build da imagem e teste Compose | API pronta com SQL Server |
-| E04 | Job staging | Deploy e verificações aprovados |
-| E05 | Navegador em 8081 | /health/ready com Staging e versão; /api/unidades com dados |
-| E06 | Job production | Executado depois do sucesso de staging |
-| E07 | Navegador em 8082 | /health/ready com Production e mesma versão; /api/unidades |
-| E08 | Docker Desktop | Projetos, containers e volumes separados |
+| E01 | Docker local: construção e inicialização | [Abrir](evidencias/01-local-docker.png) |
+| E02 | Etapas de build e integração no GitHub | [Abrir](evidencias/02-ci.png) |
+| E03 | Testes automatizados: 12 aprovados, zero falhas | [Abrir](evidencias/03-testes.png) |
+| E04 | Pipeline concluído: build, staging e produção | [Abrir](evidencias/04-pipeline.png) |
+| E05 | Staging: prontidão na porta 8081 | [Abrir](evidencias/05-staging-health.png) |
+| E06 | Staging: consulta de duas unidades | [Abrir](evidencias/06-staging-unidades.png) |
+| E07 | Produção simulada: prontidão na porta 8082 | [Abrir](evidencias/07-production-health.png) |
+| E08 | Produção simulada: consulta de duas unidades | [Abrir](evidencias/08-production-unidades.png) |
+| E09 | Containers dos ambientes no Docker Desktop | [Abrir](evidencias/09-containers.png) |
+| E10 | Volumes separados para local, staging e produção | [Abrir](evidencias/10-volumes.png) |
+| E11 | Relatório protegido: resposta HTTP 200 no teste local | [Abrir](evidencias/11-relatorio.png) |
 
-Salve as imagens em `docs/evidencias/`. Insira no README usando, por exemplo,
-`![Build aprovado](docs/evidencias/E01-build.png)` somente depois de o arquivo existir.
-Registre o link real da execução do GitHub e o SHA do commit. Não capture senhas, tokens
-ou conteúdo do .env. Artefatos `testes`, `deploy-staging` e `deploy-production` também podem
-ser baixados do workflow e usados para conferir as informações do relatório.
-
-Na seção de desafios, descreva apenas problemas observados e soluções realmente aplicadas.
-Antes da entrega, inserir os prints no PDF, atualizar o status de validação e o checklist,
-e gerar novamente o ZIP final. O PDF de preparação não contém esses prints ainda.
+O ambiente Production é uma simulação acadêmica local, acessível na máquina do autor. As capturas documentam a execução, não um monitoramento contínuo.

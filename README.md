@@ -9,10 +9,14 @@ O sistema registra unidades, pontos de coleta, coletas, destinações, alertas e
 Esta entrega usa a API original com SQL Server. Os scripts MongoDB da Fase 5 são um trabalho
 separado; não foram convertidos nem executados sobre o banco relacional.
 
-**Estado da entrega:** arquivos de implementação preparados; consulte `docs/VALIDACAO.md`
-para os testes efetivamente realizados. Pipeline remoto, containers e dois deployments
-ainda precisam ser executados e documentados. Este pacote não representa uma entrega final
-com evidências completas.
+**Estado da entrega:** execução concluída e documentada em 13/10/2026. GitHub Actions
+aprovou build, 12 testes automatizados e deploys em staging e produção simulada.
+Os dois ambientes responderam às consultas de prontidão e unidades.
+Consulte [validação](docs/VALIDACAO.md), [capturas reais](docs/EVIDENCIAS.md) e
+[relatório final](docs/EcoGestor_DevOps_Final.pdf).
+
+Repositório: https://github.com/GiovanniLuiz/EcoGestor-DevOps (privado; acesso depende de autorização).
+Versão executada: `42fd1f59bb92aef482382bbffd3327c93bcff436`.
 
 ## Como executar localmente com Docker
 
@@ -64,7 +68,7 @@ dotnet test EcoGestorApi.sln -c Release --no-build --logger trx --results-direct
 ```
 
 Os testes HTTP utilizam banco InMemory exclusivo por fixture. Eles não substituem a
-verificação de SQL Server, que está prevista no pipeline com Docker Compose.
+verificação de SQL Server, realizada no pipeline com Docker Compose.
 O teste de migration gera SQL sem conexão e confirma descoberta da migration e criação de tabelas.
 
 ## Pipeline CI/CD
@@ -138,20 +142,51 @@ desta demonstração. Há dados iniciais de duas unidades e dois pontos de colet
 
 ## Prints do funcionamento
 
-**Pendentes de captura real.** Não usar os prints do MongoDB como prova de CI/CD.
-Guia: [Evidências](docs/EVIDENCIAS.md). Coloque imagens sem credenciais em `docs/evidencias/`
-e registre aqui os links ou arquivos:
+Capturas reais da execução de 13/10/2026. Índice completo: [Evidências](docs/EVIDENCIAS.md).
 
-| Evidência | Conteúdo | Estado |
-|---|---|---|
-| E01 | Build no GitHub Actions | Pendente |
-| E02 | Testes e resultado do job | Pendente |
-| E03 | Imagem e integração API + SQL Server | Pendente |
-| E04 | Deploy staging aprovado | Pendente |
-| E05 | Staging em /health/ready e /api/unidades | Pendente |
-| E06 | Deploy production aprovado | Pendente |
-| E07 | Produção em /health/ready e /api/unidades | Pendente |
-| E08 | Containers e volumes dos dois ambientes | Pendente |
+### E01 - Docker local: construção e inicialização
+
+![Docker local: construção e inicialização](docs/evidencias/01-local-docker.png)
+
+### E02 - Etapas de build e integração no GitHub
+
+![Etapas de build e integração no GitHub](docs/evidencias/02-ci.png)
+
+### E03 - Testes automatizados: 12 aprovados, zero falhas
+
+![Testes automatizados: 12 aprovados, zero falhas](docs/evidencias/03-testes.png)
+
+### E04 - Pipeline concluído: build, staging e produção
+
+![Pipeline concluído: build, staging e produção](docs/evidencias/04-pipeline.png)
+
+### E05 - Staging: prontidão na porta 8081
+
+![Staging: prontidão na porta 8081](docs/evidencias/05-staging-health.png)
+
+### E06 - Staging: consulta de duas unidades
+
+![Staging: consulta de duas unidades](docs/evidencias/06-staging-unidades.png)
+
+### E07 - Produção simulada: prontidão na porta 8082
+
+![Produção simulada: prontidão na porta 8082](docs/evidencias/07-production-health.png)
+
+### E08 - Produção simulada: consulta de duas unidades
+
+![Produção simulada: consulta de duas unidades](docs/evidencias/08-production-unidades.png)
+
+### E09 - Containers dos ambientes no Docker Desktop
+
+![Containers dos ambientes no Docker Desktop](docs/evidencias/09-containers.png)
+
+### E10 - Volumes separados para local, staging e produção
+
+![Volumes separados para local, staging e produção](docs/evidencias/10-volumes.png)
+
+### E11 - Relatório protegido: resposta HTTP 200 no teste local
+
+![Relatório protegido: resposta HTTP 200 no teste local](docs/evidencias/11-relatorio.png)
 
 ## Tecnologias utilizadas
 
@@ -178,20 +213,20 @@ EcoGestorDevOps/
 
 ## Checklist obrigatório de entrega
 
-Só marque a validação funcional após executar e conferir suas evidências.
+Checklist conferido na finalização do pacote, com base nos arquivos e evidências incluídos.
 
 - [x] Estrutura do projeto organizada para compactação.
-- [ ] ZIP final conferido após acrescentar as evidências.
-- [ ] Dockerfile funcional confirmado por execução.
+- [x] ZIP final conferido após acrescentar as evidências.
+- [x] Dockerfile funcional confirmado por execução.
 - [x] Docker Compose escrito com volumes, variáveis e rede.
-- [ ] Docker Compose executado com sucesso.
+- [x] Docker Compose executado com sucesso.
 - [x] Pipeline escrito com build, testes e deploy em dois ambientes.
-- [ ] Pipeline executado com sucesso no GitHub.
+- [x] Pipeline executado com sucesso no GitHub.
 - [x] README com instruções.
-- [ ] README com prints ou links reais.
-- [ ] Documentação PDF final com evidências.
-- [ ] Deploy realizado e verificado em staging.
-- [ ] Deploy realizado e verificado em produção simulada.
+- [x] README com prints ou links reais.
+- [x] Documentação PDF final com evidências.
+- [x] Deploy realizado e verificado em staging.
+- [x] Deploy realizado e verificado em produção simulada.
 
 ## Fontes técnicas
 
