@@ -11,7 +11,7 @@ GitHub Actions
 aprovou build, 12 testes automatizados e deploys em staging e produção simulada.
 Os dois ambientes responderam às consultas de prontidão e unidades.
 Consulte [validação](docs/VALIDACAO.md), [capturas reais](docs/EVIDENCIAS.md) e
-[relatório final](docs/EcoGestor_DevOps_Final.pdf).
+[relatório final](docs/Desafio_DevOps_Fase_6_Giovanni_Luiz_do_Rego_RM_563071.pdf).
 
 Repositório: [GiovanniLuiz/EcoGestor-DevOps](https://github.com/GiovanniLuiz/EcoGestor-DevOps).
 
