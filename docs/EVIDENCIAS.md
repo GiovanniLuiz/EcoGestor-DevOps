@@ -1,7 +1,5 @@
 # Evidências da execução
 
-Capturas reais fornecidas pelo autor em 13/10/2026. Os arquivos originais foram preservados.
-
 | ID | Conteúdo | Arquivo |
 |---|---|---|
 | E01 | Docker local: construção e inicialização | [Abrir](evidencias/01-local-docker.png) |
@@ -15,5 +13,3 @@ Capturas reais fornecidas pelo autor em 13/10/2026. Os arquivos originais foram 
 | E09 | Containers dos ambientes no Docker Desktop | [Abrir](evidencias/09-containers.png) |
 | E10 | Volumes separados para local, staging e produção | [Abrir](evidencias/10-volumes.png) |
 | E11 | Relatório protegido: resposta HTTP 200 no teste local | [Abrir](evidencias/11-relatorio.png) |
-
-O ambiente Production é uma simulação acadêmica local, acessível na máquina do autor. As capturas documentam a execução, não um monitoramento contínuo.

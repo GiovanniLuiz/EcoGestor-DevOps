@@ -6,24 +6,16 @@
 
 Desafio DevOps da Fase 6. Evolução da API ESG em C# para gestão de resíduos e reciclagem.
 O sistema registra unidades, pontos de coleta, coletas, destinações, alertas e indicadores.
-Esta entrega usa a API original com SQL Server. Os scripts MongoDB da Fase 5 são um trabalho
-separado; não foram convertidos nem executados sobre o banco relacional.
 
-**Estado da entrega:** execução concluída e documentada em 13/10/2026. GitHub Actions
+GitHub Actions
 aprovou build, 12 testes automatizados e deploys em staging e produção simulada.
 Os dois ambientes responderam às consultas de prontidão e unidades.
 Consulte [validação](docs/VALIDACAO.md), [capturas reais](docs/EVIDENCIAS.md) e
 [relatório final](docs/EcoGestor_DevOps_Final.pdf).
 
-Repositório: https://github.com/GiovanniLuiz/EcoGestor-DevOps (privado; acesso depende de autorização).
-Versão executada: `42fd1f59bb92aef482382bbffd3327c93bcff436`.
+Repositório: [GiovanniLuiz/EcoGestor-DevOps](https://github.com/GiovanniLuiz/EcoGestor-DevOps).
 
 ## Como executar localmente com Docker
-
-Pré-requisitos: Windows 11 x64, Docker Desktop com backend WSL 2, Linux containers e
-Docker Compose v2 com suporte a `up --wait`. Reservar memória suficiente para SQL Server
-(pelo menos 2 GB por instância SQL, além de API, Docker e Windows; cerca de 8 GB para Docker
-é uma referência para os dois ambientes de demonstração). Não é necessário Visual Studio.
 
 Na pasta raiz do projeto, abra PowerShell:
 
@@ -42,7 +34,7 @@ Acesse:
 - Unidades: http://localhost:8080/api/unidades
 
 No Swagger execute `POST /api/auth/login` com as credenciais do `.env`, copie apenas o token
-para o botão Authorize e teste os endpoints protegidos. Não inclua o token nas evidências.
+para o botão Authorize e teste os endpoints protegidos.
 O Postman está em `postman/`; configure `baseUrl` e as credenciais no ambiente local.
 
 ```powershell
@@ -86,7 +78,6 @@ Uma falha bloqueia as etapas dependentes. Não há rollback automático; uma ver
 deve ser reimplantada conscientemente, considerando compatibilidade do esquema do banco.
 Os dados são preservados nos volumes durante a atualização da aplicação.
 
-Os ambientes são uma **simulação acadêmica persistente no computador**, não hospedagem pública.
 Os runners hospedados no GitHub são usados para CI; o runner local mantém os deployments
 depois que os jobs terminam. O computador deve estar ligado, conectado e com Docker e runner ativos.
 Configuração detalhada: [Guia GitHub e ambientes](docs/CONFIGURACAO.md).
@@ -127,22 +118,9 @@ Compose sobe `api` e `db`, conectados pela rede `backend`. O banco não publica 
 no host. O volume `sql-data` mantém os dados; Compose prefixa redes e volumes com o nome
 do projeto, isolando os ambientes. A API só inicia depois de o healthcheck do SQL passar.
 
-O SQL Server Developer é usado exclusivamente nesta demonstração acadêmica, inclusive no
-ambiente chamado Production; não representa licenciamento para uso comercial em produção.
-As portas da API escutam apenas em `127.0.0.1`. Se houver hospedagem pública futura, será
-necessário configurar HTTPS, proxy, credenciais e acesso ao banco adequados à hospedagem.
-
-### Banco e migrations
-
-A migration inicial foi reconstruída a partir dos modelos para bancos NOVOS desta fase,
-pois o pacote anterior tinha snapshot incompleto e migration sem metadados de descoberta.
-Não apontar esta versão para um banco antigo sem planejar a migração dos dados.
-As migrations são aplicadas na inicialização, adequadas à instância única por ambiente
-desta demonstração. Há dados iniciais de duas unidades e dois pontos de coleta.
-
 ## Prints do funcionamento
 
-Capturas reais da execução de 13/10/2026. Índice completo: [Evidências](docs/EVIDENCIAS.md).
+Índice completo: [Evidências](docs/EVIDENCIAS.md).
 
 ### E01 - Docker local: construção e inicialização
 
@@ -227,11 +205,3 @@ Checklist conferido na finalização do pacote, com base nos arquivos e evidênc
 - [x] Documentação PDF final com evidências.
 - [x] Deploy realizado e verificado em staging.
 - [x] Deploy realizado e verificado em produção simulada.
-
-## Fontes técnicas
-
-- Material da Fase 6 fornecido pela FIAP e enunciado Desafio DevOps.
-- https://docs.docker.com/compose/how-tos/startup-order/
-- https://learn.microsoft.com/sql/linux/sql-server-linux-docker-container-deployment
-- https://docs.github.com/en/actions/concepts/runners/self-hosted-runners
-- https://docs.github.com/en/actions/reference/security/secure-use
