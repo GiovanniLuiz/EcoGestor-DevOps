@@ -1,0 +1,45 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD:?Configure DB_PASSWORD}
+    volumes:
+      - sql-data:/var/opt/mssql
+    networks: [backend]
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          SQLCMDPASSWORD="$$MSSQL_SA_PASSWORD" /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -C -Q 'SELECT 1' -b -o /dev/null
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+  api:
+    image: ${APP_IMAGE:-ecogestor-api:local}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${APP_ENVIRONMENT:-Development}
+      ConnectionStrings__DefaultConnection: Server=db;Database=EcoGestorDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True
+      Jwt__Key: ${JWT_KEY:?Configure JWT_KEY}
+      Bootstrap__Email: ${ADMIN_EMAIL:-admin@ecogestor.example}
+      Bootstrap__Password: ${ADMIN_PASSWORD:?Configure ADMIN_PASSWORD}
+      Database__MigrateOnStartup: "true"
+      Swagger__Enabled: "true"
+      APP_VERSION: ${APP_VERSION:-local}
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8080"
+    networks: [backend]
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  sql-data:
+networks:
+  backend:

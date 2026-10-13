@@ -1,0 +1,58 @@
+{
+  "data": "2026-10-13",
+  "build": "aprovado",
+  "testes": [
+    [
+      "EcoGestorApi.Tests.DevOpsTests.Readiness_ReportsEnvironment",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.DevOpsTests.SqlServerMigration_IsDiscoverableAndGeneratesTables",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.DestinacoesResiduoControllerTests.Get_ReturnsHttpStatusCode200",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.DevOpsTests.ProtectedEndpoint_WithoutToken_Returns401",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.AuthControllerTests.Login_ReturnsHttpStatusCode200",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.AlertasColetaControllerTests.Get_ReturnsHttpStatusCode200",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.PontosColetaControllerTests.Get_ReturnsHttpStatusCode200",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.DevOpsTests.WrongPassword_Returns401",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.RelatoriosControllerTests.Get_ReturnsHttpStatusCode200",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.DevOpsTests.Unit_CanBeCreatedUpdatedAndDeleted",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.UnidadesControllerTests.Get_ReturnsHttpStatusCode200",
+      "Passed"
+    ],
+    [
+      "EcoGestorApi.Tests.ColetasResiduoControllerTests.Get_ReturnsHttpStatusCode200",
+      "Passed"
+    ]
+  ],
+  "dockerExecutado": false,
+  "pipelineRemotoExecutado": false,
+  "stagingPublicado": false,
+  "producaoPublicada": false
+}

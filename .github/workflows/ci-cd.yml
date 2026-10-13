@@ -1,0 +1,76 @@
+name: EcoGestor CI CD
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ecogestor-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restaurar dependências
+        run: dotnet restore EcoGestorApi.sln
+      - name: Build
+        run: dotnet build EcoGestorApi.sln -c Release --no-restore
+      - name: Testes automatizados
+        run: dotnet test EcoGestorApi.sln -c Release --no-build --logger trx --results-directory TestResults
+      - name: Guardar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testes
+          path: TestResults
+      - name: Construir imagem
+        run: docker build -t ecogestor-api:${{ github.sha }} .
+      - name: Verificar aplicação com SQL Server real
+        shell: bash
+        run: |
+          set -euo pipefail
+          export DB_PASSWORD="Eg9!$(openssl rand -hex 24)"
+          export JWT_KEY="$(openssl rand -hex 32)"
+          export ADMIN_PASSWORD="Eg9!$(openssl rand -hex 24)"
+          export APP_IMAGE="ecogestor-api:${{ github.sha }}"
+          export APP_VERSION="${{ github.sha }}"
+          export APP_ENVIRONMENT=Staging
+          export API_PORT=8080
+          docker compose -p ecogestor-ci up -d --no-build --wait --wait-timeout 300
+          curl --fail --retry 5 --retry-delay 5 http://localhost:8080/health/ready
+          curl --fail http://localhost:8080/api/unidades
+          docker compose -p ecogestor-ci stop
+      - name: Salvar imagem aprovada
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: docker save ecogestor-api:${{ github.sha }} -o ecogestor-image.tar
+      - uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        with:
+          name: imagem-docker
+          path: ecogestor-image.tar
+          retention-days: 3
+  staging:
+    needs: build-test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/deploy.yml
+    with:
+      target: staging
+      environment_name: Staging
+      port: '8081'
+    secrets: inherit
+  production:
+    needs: staging
+    uses: ./.github/workflows/deploy.yml
+    with:
+      target: production
+      environment_name: Production
+      port: '8082'
+    secrets: inherit

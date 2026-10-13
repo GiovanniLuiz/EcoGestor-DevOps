@@ -1,0 +1,45 @@
+name: Deploy de ambiente
+on:
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+      environment_name:
+        required: true
+        type: string
+      port:
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  deploy:
+    runs-on: [self-hosted, Windows, X64, ecogestor]
+    timeout-minutes: 20
+    environment: ${{ inputs.target }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: imagem-docker
+          path: artifacts
+      - name: Publicar e verificar ambiente
+        shell: powershell
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JWT_KEY: ${{ secrets.JWT_KEY }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          ADMIN_EMAIL: admin@ecogestor.example
+          APP_ENVIRONMENT: ${{ inputs.environment_name }}
+          API_PORT: ${{ inputs.port }}
+          APP_VERSION: ${{ github.sha }}
+          APP_IMAGE: ecogestor-api:${{ github.sha }}
+        run: ./scripts/Deploy.ps1 -Target '${{ inputs.target }}' -ImageArchive artifacts/ecogestor-image.tar
+      - name: Guardar comprovante de implantação
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-${{ inputs.target }}
+          path: artifacts/deploy-${{ inputs.target }}.json
+          if-no-files-found: warn

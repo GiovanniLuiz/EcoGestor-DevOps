@@ -1,0 +1,343 @@
+{
+  "info": {
+    "name": "EcoGestor API - Postman Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection para testes da EcoGestor API - Gestão de resíduos e reciclagem."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "email",
+      "value": "admin@ecogestor.example"
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"{{email}}\", \"senha\": \"{{password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Login aprovado\", () => pm.response.to.have.status(200));",
+              "if (pm.response.code === 200) pm.collectionVariables.set(\"token\", pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unidades - Listar paginado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/unidades?pageNumber=1&pageSize=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "unidades"
+          ],
+          "query": [
+            {
+              "key": "pageNumber",
+              "value": "1"
+            },
+            {
+              "key": "pageSize",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pontos de Coleta - Listar paginado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/pontos-coleta?pageNumber=1&pageSize=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pontos-coleta"
+          ],
+          "query": [
+            {
+              "key": "pageNumber",
+              "value": "1"
+            },
+            {
+              "key": "pageSize",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pontos de Coleta - Criar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/pontos-coleta",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pontos-coleta"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idUnidade\": 1,\n  \"tipoResiduo\": \"VIDRO\",\n  \"capacidadeMaxKg\": 120,\n  \"nivelAtualKg\": 60\n}"
+        }
+      }
+    },
+    {
+      "name": "Coletas - Listar paginado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/coletas?pageNumber=1&pageSize=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "coletas"
+          ],
+          "query": [
+            {
+              "key": "pageNumber",
+              "value": "1"
+            },
+            {
+              "key": "pageSize",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Coletas - Registrar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/coletas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "coletas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idPonto\": 1,\n  \"quantidadeKg\": 20,\n  \"destinoPrevisto\": \"Reciclagem\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Destinações - Listar paginado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/destinacoes?pageNumber=1&pageSize=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "destinacoes"
+          ],
+          "query": [
+            {
+              "key": "pageNumber",
+              "value": "1"
+            },
+            {
+              "key": "pageSize",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Destinações - Registrar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/destinacoes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "destinacoes"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idColeta\": 1,\n  \"empresaDestino\": \"Empresa Recicla Mais\",\n  \"formaTratamento\": \"Reciclagem\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Alertas - Listar paginado",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/alertas?pageNumber=1&pageSize=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "alertas"
+          ],
+          "query": [
+            {
+              "key": "pageNumber",
+              "value": "1"
+            },
+            {
+              "key": "pageSize",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Alertas - Verificar críticos",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/alertas/verificar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "alertas",
+            "verificar"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Relatórios - Impacto",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/relatorios/impacto",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "relatorios",
+            "impacto"
+          ]
+        }
+      }
+    }
+  ]
+}
